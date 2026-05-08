@@ -202,20 +202,19 @@ footer p{font-size:12px;color:rgba(255,255,255,0.2);}
 
 <script>
 function openChat() {
-  var methods = ['openWindow','open','toggle','show','launch','renderCustomResponse'];
-  if (window.wxoLoader) {
-    for (var i = 0; i < methods.length; i++) {
-      if (typeof window.wxoLoader[methods[i]] === 'function') {
-        window.wxoLoader[methods[i]]();
-        return;
-      }
+  wxoLoader.init();
+  setTimeout(function() {
+    var btn = document.querySelector(
+      'button[class*="launcher"], button[class*="Launcher"], ' +
+      'button[aria-label*="chat"], button[aria-label*="Chat"], ' +
+      'button[aria-label*="assistant"], button[aria-label*="Assistant"], ' +
+      '[class*="WACLauncher"] button, [id*="launcher"] button'
+    );
+    if (btn) {
+      btn.click();
     }
-  }
-  var btn = document.querySelector('[aria-label*="Watson"], [aria-label*="chat"], [aria-label*="assistant"], [class*="Launcher"], [class*="launcher"], [id*="Launcher"]');
-  if (btn) { btn.click(); return; }
-  console.log('Available wxoLoader methods:', window.wxoLoader ? Object.keys(window.wxoLoader) : 'not loaded');
+  }, 1000);
 }
-
 document.getElementById('wxo-script').addEventListener('load', function() {
   if (window.wxoLoader && window.wxoLoader.init) {
     window.wxoLoader.init();
