@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IV Assistant — Swiss Disability Insurance</title>
+
+<!-- watsonx config BEFORE the loader script -->
+<script>
+window.wxOConfiguration = {
+  orchestrationID: "20260212-1507-5264-503c-ab0bcc82997f_20260213-1405-1970-30af-cfa32012e4ce",
+  hostURL: "https://dl.watson-orchestrate.ibm.com",
+  rootElementID: "root",
+  chatOptions: {
+    agentId: "8a52bdcc-14af-4c27-a4bb-4cbaa260684b"
+  }
+};
+</script>
+
+<!-- watsonx loader script directly in head — no dynamic injection -->
+<script id="wxo-script" src="https://dl.watson-orchestrate.ibm.com/wxochat/wxoLoader.js?embed=true"></script>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter','Segoe UI',sans-serif;background:#0a0a0f;color:#e8e8f0;min-height:100vh;overflow-x:hidden;}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:0 40px;height:60px;display:flex;align-items:center;justify-content:space-between;background:rgba(10,10,15,0.85);backdrop-filter:blur(12px);border-bottom:0.5px solid rgba(255,255,255,0.06);}
+.nav-brand{display:flex;align-items:center;gap:10px;}
+.nav-dot{width:8px;height:8px;border-radius:50%;background:#6c8fff;}
+.nav-title{font-size:15px;font-weight:500;color:#e8e8f0;}
+.nav-links{display:flex;gap:28px;}
+.nav-links a{font-size:13px;color:rgba(255,255,255,0.45);text-decoration:none;}
+.nav-cta{font-size:13px;padding:7px 18px;border-radius:8px;background:rgba(108,143,255,0.15);border:0.5px solid rgba(108,143,255,0.35);color:#a0b8ff;cursor:pointer;transition:background 0.15s;}
+.nav-cta:hover{background:rgba(108,143,255,0.25);}
+
+.hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;padding:100px 60px 60px;max-width:1200px;margin:0 auto;position:relative;}
+.glow{position:fixed;top:10%;left:25%;width:700px;height:400px;background:radial-gradient(ellipse,rgba(108,143,255,0.07) 0%,transparent 70%);pointer-events:none;z-index:0;}
+
+.hero-left{position:relative;z-index:1;}
+.hero-badge{display:inline-flex;align-items:center;gap:7px;padding:5px 14px;border-radius:20px;border:0.5px solid rgba(108,143,255,0.3);background:rgba(108,143,255,0.08);font-size:12px;color:#8aabff;margin-bottom:24px;}
+.badge-dot{width:5px;height:5px;border-radius:50%;background:#6c8fff;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
+h1{font-size:44px;font-weight:500;line-height:1.12;letter-spacing:-1.5px;color:#f0f0f8;margin-bottom:16px;}
+h1 span{color:transparent;background:linear-gradient(135deg,#7aa3ff,#a78bfa);-webkit-background-clip:text;background-clip:text;}
+.hero-sub{font-size:16px;color:rgba(255,255,255,0.4);line-height:1.7;margin-bottom:36px;max-width:400px;}
+.hero-meta{display:flex;gap:28px;align-items:center;margin-bottom:40px;}
+.hm-n{font-size:22px;font-weight:500;color:#f0f0f8;}
+.hm-l{font-size:12px;color:rgba(255,255,255,0.3);margin-top:2px;}
+.hm-div{width:1px;height:36px;background:rgba(255,255,255,0.08);}
+
+.btn-primary{display:inline-flex;align-items:center;gap:10px;padding:14px 28px;border-radius:10px;background:rgba(108,143,255,0.2);border:0.5px solid rgba(108,143,255,0.5);color:#a0b8ff;font-size:15px;font-family:inherit;cursor:pointer;transition:all 0.2s;}
+.btn-primary:hover{background:rgba(108,143,255,0.35);}
+
+.agent-card{background:rgba(255,255,255,0.03);border:0.5px solid rgba(255,255,255,0.1);border-radius:20px;overflow:hidden;}
+.card-topbar{padding:14px 18px;border-bottom:0.5px solid rgba(255,255,255,0.07);display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.02);}
+.mac-dots{display:flex;gap:5px;}
+.md{width:10px;height:10px;border-radius:50%;}
+.md1{background:#ff5f5a;}.md2{background:#febc2e;}.md3{background:#28c840;}
+.card-label{font-size:12px;color:rgba(255,255,255,0.25);margin:0 auto;}
+.online{display:flex;align-items:center;gap:5px;font-size:11px;color:rgba(255,255,255,0.3);}
+.online-dot{width:6px;height:6px;border-radius:50%;background:#28c840;animation:pulse 2s infinite;}
+
+.chat-preview{padding:20px 18px;display:flex;flex-direction:column;gap:14px;}
+.msg{display:flex;gap:10px;align-items:flex-end;}
+.msg.u{flex-direction:row-reverse;}
+.av{width:28px;height:28px;border-radius:50%;background:rgba(108,143,255,0.2);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;color:#8aabff;flex-shrink:0;}
+.av.ua{background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.4);}
+.bubble{max-width:82%;padding:10px 14px;border-radius:12px;font-size:13px;line-height:1.55;color:rgba(255,255,255,0.75);}
+.msg.a .bubble{background:rgba(255,255,255,0.06);border-radius:4px 12px 12px 12px;}
+.msg.u .bubble{background:rgba(108,143,255,0.18);color:#c4d5ff;border-radius:12px 4px 12px 12px;}
+
+.card-cta{padding:16px 18px;border-top:0.5px solid rgba(255,255,255,0.07);}
+.open-btn{width:100%;padding:12px;border-radius:10px;background:rgba(108,143,255,0.18);border:0.5px solid rgba(108,143,255,0.4);color:#a0b8ff;font-size:14px;font-family:inherit;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all 0.2s;}
+.open-btn:hover{background:rgba(108,143,255,0.32);}
+.pulse-ring{width:8px;height:8px;border-radius:50%;background:#6c8fff;animation:pulse 2s infinite;flex-shrink:0;}
+
+.features{padding:80px 60px;max-width:1200px;margin:0 auto;}
+.sec-label{font-size:11px;color:rgba(255,255,255,0.25);letter-spacing:1.2px;text-transform:uppercase;margin-bottom:32px;text-align:center;}
+.fg{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,0.05);border-radius:12px;overflow:hidden;}
+.fc{background:#0a0a0f;padding:24px;transition:background 0.2s;}
+.fc:hover{background:rgba(255,255,255,0.02);}
+.fi{width:30px;height:30px;border-radius:8px;margin-bottom:12px;display:flex;align-items:center;justify-content:center;}
+.fc h3{font-size:13px;font-weight:500;color:#e8e8f0;margin-bottom:5px;}
+.fc p{font-size:12px;color:rgba(255,255,255,0.3);line-height:1.6;}
+
+.agents-strip{padding:0 60px 80px;max-width:1200px;margin:0 auto;}
+.as-inner{background:rgba(255,255,255,0.02);border:0.5px solid rgba(255,255,255,0.06);border-radius:12px;padding:20px 28px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+.ag{display:flex;align-items:center;gap:7px;}
+.ag-dot{width:6px;height:6px;border-radius:50%;}
+.ag-name{font-size:12px;color:rgba(255,255,255,0.4);}
+.ag-div{width:1px;height:18px;background:rgba(255,255,255,0.06);}
+
+footer{padding:24px 60px;border-top:0.5px solid rgba(255,255,255,0.06);display:flex;justify-content:space-between;align-items:center;}
+footer p{font-size:12px;color:rgba(255,255,255,0.2);}
+.fl{display:flex;gap:20px;}
+.fl a{font-size:12px;color:rgba(255,255,255,0.3);text-decoration:none;}
+.fl a:hover{color:rgba(255,255,255,0.6);}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">
+    <div class="nav-dot"></div>
+    <span class="nav-title">IV Assistant</span>
+  </div>
+  <div class="nav-links">
+    <a href="#">How it works</a>
+    <a href="#">Agents</a>
+    <a href="#">Privacy</a>
+  </div>
+  <div class="nav-cta" onclick="openChat()">Open IV Assistant</div>
+</nav>
+
+<div class="glow"></div>
+
+<div class="hero">
+  <div class="hero-left">
+    <div class="hero-badge"><div class="badge-dot"></div>IBM watsonx · HSG × IBM 2026</div>
+    <h1>Your IV paperwork,<br><span>handled automatically</span></h1>
+    <p class="hero-sub">Stop spending evenings on Swiss disability insurance forms. Upload your medical report and IV Assistant takes care of the rest — while you stay in full control of every submission.</p>
+    <div class="hero-meta">
+      <div><div class="hm-n">6–12h</div><div class="hm-l">saved / month</div></div>
+      <div class="hm-div"></div>
+      <div><div class="hm-n">≥95%</div><div class="hm-l">form accuracy</div></div>
+      <div class="hm-div"></div>
+      <div><div class="hm-n">100%</div><div class="hm-l">your approval</div></div>
+    </div>
+    <button class="btn-primary" onclick="openChat()">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5" r="3" stroke="#a0b8ff" stroke-width="1.4"/><path d="M2 14c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="#a0b8ff" stroke-width="1.4" stroke-linecap="round"/></svg>
+      Start conversation
+    </button>
+  </div>
+
+  <div class="hero-right">
+    <div class="agent-card">
+      <div class="card-topbar">
+        <div class="mac-dots"><div class="md md1"></div><div class="md md2"></div><div class="md md3"></div></div>
+        <span class="card-label">IV Assistant Orchestrator</span>
+        <div class="online"><div class="online-dot"></div>Live · 5 agents</div>
+      </div>
+      <div class="chat-preview">
+        <div class="msg a">
+          <div class="av">IV</div>
+          <div class="bubble">Hello! I'm your IV Assistant. I coordinate 5 specialist agents to handle your Swiss disability insurance administration.<br><br>Upload a medical report or describe your situation to get started.</div>
+        </div>
+        <div class="msg u">
+          <div class="av ua">M</div>
+          <div class="bubble">My son has cerebral palsy and we need to apply for IV benefits in Lucerne.</div>
+        </div>
+        <div class="msg a">
+          <div class="av">IV</div>
+          <div class="bubble">Routing to Form Assistant 1... Based on your son's age and diagnosis, this looks like Form 001.003. Let me extract the details automatically.</div>
+        </div>
+      </div>
+      <div class="card-cta">
+        <button class="open-btn" onclick="openChat()">
+          <div class="pulse-ring"></div>
+          Open IV Assistant to start your conversation
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="features">
+  <div class="sec-label">Capabilities</div>
+  <div class="fg">
+    <div class="fc"><div class="fi" style="background:rgba(108,143,255,0.12);"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="14" rx="2" stroke="#6c8fff" stroke-width="1.3"/><path d="M5 6h6M5 9h4" stroke="#6c8fff" stroke-width="1.2" stroke-linecap="round"/></svg></div><h3>Automatic form selection</h3><p>Upload a medical report — correct IV form (001.001–001.101) identified and filled instantly.</p></div>
+    <div class="fc"><div class="fi" style="background:rgba(167,139,250,0.12);"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l3 3 7-7" stroke="#a78bfa" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><h3>PDF generation</h3><p>Ready-to-sign pre-filled PDF via RPA API, reviewed by you before creation.</p></div>
+    <div class="fc"><div class="fi" style="background:rgba(52,211,153,0.1);"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="#34d399" stroke-width="1.3"/><path d="M8 5v3.5M8 11v.3" stroke="#34d399" stroke-width="1.4" stroke-linecap="round"/></svg></div><h3>Legal guidance</h3><p>IV law, deadlines, reforms — in German, French, Italian, or English.</p></div>
+    <div class="fc"><div class="fi" style="background:rgba(251,191,36,0.1);"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v4M8 10v4M2 8h4M10 8h4" stroke="#fbbf24" stroke-width="1.5" stroke-linecap="round"/></svg></div><h3>Regulation alerts</h3><p>Notified when Swiss IV law changes affecting your child's canton and benefits.</p></div>
+    <div class="fc"><div class="fi" style="background:rgba(248,113,113,0.1);"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 4h10M3 8h7M3 12h5" stroke="#f87171" stroke-width="1.4" stroke-linecap="round"/></svg></div><h3>Formal letters</h3><p>Einsprache, Gesuch, Kostengutsprache with correct IVG article references.</p></div>
+    <div class="fc"><div class="fi" style="background:rgba(108,143,255,0.12);"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><ellipse cx="8" cy="6" rx="4" ry="3" stroke="#6c8fff" stroke-width="1.3"/><path d="M4 10c0 1.7 1.8 3 4 3s4-1.3 4-3" stroke="#6c8fff" stroke-width="1.3"/></svg></div><h3>Profile memory</h3><p>Stored via AHV number in Airtable. Return visits skip data entry entirely.</p></div>
+  </div>
+</div>
+
+<div class="agents-strip">
+  <div class="as-inner">
+    <div class="ag"><div class="ag-dot" style="background:#6c8fff;"></div><span class="ag-name">Form Assistant 1 — classification</span></div>
+    <div class="ag-div"></div>
+    <div class="ag"><div class="ag-dot" style="background:#a78bfa;"></div><span class="ag-name">Form Assistant 2 — PDF generation</span></div>
+    <div class="ag-div"></div>
+    <div class="ag"><div class="ag-dot" style="background:#34d399;"></div><span class="ag-name">Data Agent — Airtable memory</span></div>
+    <div class="ag-div"></div>
+    <div class="ag"><div class="ag-dot" style="background:#fbbf24;"></div><span class="ag-name">IV Assist — legal intelligence</span></div>
+    <div class="ag-div"></div>
+    <div class="ag"><div class="ag-dot" style="background:#f87171;"></div><span class="ag-name">Judge Agent — quality control</span></div>
+  </div>
+</div>
+
+<footer>
+  <p>University of St. Gallen × IBM watsonx · AHV data processed in-session only</p>
+  <div class="fl">
+    <a href="https://www.was-luzern.ch" target="_blank">WAS IV Lucerne</a>
+    <a href="https://www.pro-infirmis.ch" target="_blank">Pro Infirmis</a>
+    <a href="https://www.ahv-iv.ch" target="_blank">AHV-IV.ch</a>
+  </div>
+</footer>
+
+<div id="root"></div>
+
+<script>
+function openChat() {
+  var methods = ['openWindow','open','toggle','show','launch','renderCustomResponse'];
+  if (window.wxoLoader) {
+    for (var i = 0; i < methods.length; i++) {
+      if (typeof window.wxoLoader[methods[i]] === 'function') {
+        window.wxoLoader[methods[i]]();
+        return;
+      }
+    }
+  }
+  var btn = document.querySelector('[aria-label*="Watson"], [aria-label*="chat"], [aria-label*="assistant"], [class*="Launcher"], [class*="launcher"], [id*="Launcher"]');
+  if (btn) { btn.click(); return; }
+  console.log('Available wxoLoader methods:', window.wxoLoader ? Object.keys(window.wxoLoader) : 'not loaded');
+}
+
+document.getElementById('wxo-script').addEventListener('load', function() {
+  if (window.wxoLoader && window.wxoLoader.init) {
+    window.wxoLoader.init();
+  }
+});
+</script>
+
+</body>
+</html>
